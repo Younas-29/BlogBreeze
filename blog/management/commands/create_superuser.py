@@ -17,7 +17,16 @@ class Command(BaseCommand):
             return
         
         if not User.objects.filter(username=username).exists():
-            User.objects.create_superuser(username=username, email=email, password=password)
-            self.stdout.write(self.style.SUCCESS(f'Superuser "{username}" created successfully'))
+            try:
+                user = User.objects.create_superuser(username=username, email=email, password=password)
+                self.stdout.write(self.style.SUCCESS(f'Superuser "{username}" created successfully'))
+                
+                # Ensure UserProfile exists and set role to admin
+                if hasattr(user, 'profile'):
+                    user.profile.role = 'admin'
+                    user.profile.save()
+                    self.stdout.write(self.style.SUCCESS(f'UserProfile for "{username}" updated to admin'))
+            except Exception as e:
+                self.stdout.write(self.style.ERROR(f'Error creating superuser: {str(e)}'))
         else:
             self.stdout.write(self.style.WARNING(f'Superuser "{username}" already exists'))
