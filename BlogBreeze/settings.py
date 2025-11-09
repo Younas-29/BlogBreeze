@@ -42,9 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    # Third-party apps
+    # Third-party apps (cloudinary_storage must be before staticfiles)
     'cloudinary_storage',
+    'django.contrib.staticfiles',
     'cloudinary',
     'ckeditor',
     'ckeditor_uploader',
@@ -193,6 +193,11 @@ LOGOUT_REDIRECT_URL = 'blog:post_list'
 # CKEditor Configuration
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'
+
+# Use Cloudinary for CKEditor uploads in production
+if not DEBUG:
+    CKEDITOR_STORAGE_BACKEND = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
