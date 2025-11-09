@@ -32,6 +32,23 @@ class PostListView(ListView):
             queryset = queryset.filter(status='published')
         
         return queryset.order_by('-created_at')
+    
+    def get_context_data(self, **kwargs):
+        """
+        Add hero_post and remaining_posts to context.
+        The first post is displayed as hero, remaining posts in grid.
+        """
+        context = super().get_context_data(**kwargs)
+        posts = context['posts']
+        
+        if posts:
+            context['hero_post'] = posts[0]
+            context['remaining_posts'] = posts[1:]
+        else:
+            context['hero_post'] = None
+            context['remaining_posts'] = []
+        
+        return context
 
 
 class PostDetailView(DetailView):
@@ -54,11 +71,25 @@ class PostDetailView(DetailView):
     
     def get_context_data(self, **kwargs):
         """
-        Add comment form and comments to context.
+        Add comment form, comments, read time, and related posts to context.
         """
         context = super().get_context_data(**kwargs)
+        post = self.object
+        
+        # Add comment form and comments
         context['comment_form'] = CommentForm()
-        context['comments'] = self.object.comments.all()
+        context['comments'] = post.comments.all()
+        
+        # Calculate read time (assuming 200 words per minute)
+        word_count = len(post.content.split())
+        context['read_time'] = max(1, round(word_count / 200))
+        
+        # Get related posts (same category, exclude current, limit 3)
+        context['related_posts'] = Post.objects.filter(
+            category=post.category,
+            status='published'
+        ).exclude(id=post.id).select_related('author', 'category').prefetch_related('tags')[:3]
+        
         return context
     
     def post(self, request, *args, **kwargs):
@@ -273,6 +304,21 @@ class TagPostListView(ListView):
         context = super().get_context_data(**kwargs)
         context['tag'] = self.tag
         return context
+
+
+class CategoryListView(ListView):
+    """
+    Display list of all categories with post counts.
+    """
+    model = Category
+    template_name = 'blog/category_list.html'
+    context_object_name = 'categories'
+    
+    def get_queryset(self):
+        """
+        Return all categories ordered by name.
+        """
+        return Category.objects.all().order_by('name')
 
 
 class SearchView(ListView):

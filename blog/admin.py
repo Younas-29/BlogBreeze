@@ -31,7 +31,7 @@ class PostAdmin(admin.ModelAdmin):
             'fields': ('title', 'slug', 'author', 'category')
         }),
         ('Content', {
-            'fields': ('content', 'featured_image')
+            'fields': ('description', 'content', 'featured_image')
         }),
         ('Metadata', {
             'fields': ('status', 'tags')

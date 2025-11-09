@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Categories - Modern Blog{% endblock %}
+
+{% block content %}
+<main class="w-full max-w-6xl mx-auto flex-1 px-4 py-8 sm:py-12">
+    <div class="flex flex-col gap-8">
+        <!-- Page Heading -->
+        <div class="flex flex-col gap-2">
+            <h1 class="text-text-light dark:text-text-dark text-4xl sm:text-5xl font-black tracking-tighter">Categories</h1>
+            <p class="text-text-secondary-light dark:text-text-secondary-dark text-base font-normal leading-normal max-w-2xl">
+                Browse posts by category to find content that interests you.
+            </p>
+        </div>
+        
+        <!-- Back Button -->
+        <div class="mb-4">
+            <a href="{% url 'blog:post_list' %}" class="inline-flex items-center gap-2 text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-lg">arrow_back</span>
+                <span>Back to Home</span>
+            </a>
+        </div>
+        
+        {% if categories %}
+            <!-- Categories Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for category in categories %}
+                    <a href="{% url 'blog:category_posts' category.slug %}" class="group flex flex-col gap-4 p-6 rounded-xl bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark hover:shadow-lg hover:border-primary/50 transition-all duration-300">
+                        <div class="flex items-center justify-between">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20">
+                                <span class="material-symbols-outlined text-primary text-2xl">folder</span>
+                            </div>
+                            <span class="text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark">
+                                {{ category.posts.count }} post{{ category.posts.count|pluralize }}
+                            </span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-text-light dark:text-text-dark group-hover:text-primary transition-colors mb-2">
+                                {{ category.name }}
+                            </h3>
+                            {% if category.description %}
+                                <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-2">
+                                    {{ category.description }}
+                                </p>
+                            {% endif %}
+                        </div>
+                        <div class="flex items-center gap-2 text-primary text-sm font-medium mt-auto">
+                            <span>View posts</span>
+                            <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Empty State -->
+            <div class="flex flex-col items-center justify-center py-20">
+                <span class="material-symbols-outlined text-6xl text-text-secondary-light dark:text-text-secondary-dark mb-4">category</span>
+                <p class="text-2xl font-bold mb-2 text-text-light dark:text-text-dark">No Categories Yet</p>
+                <p class="text-text-secondary-light dark:text-text-secondary-dark">Categories will appear here once they are created.</p>
+            </div>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

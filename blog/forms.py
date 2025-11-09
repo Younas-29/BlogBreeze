@@ -9,11 +9,17 @@ class PostForm(forms.ModelForm):
     
     class Meta:
         model = Post
-        fields = ['title', 'content', 'category', 'tags', 'status', 'featured_image']
+        fields = ['title', 'description', 'content', 'category', 'tags', 'status', 'featured_image']
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Enter post title'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'maxlength': 300,
+                'placeholder': 'Enter a short description (max 300 characters)'
             }),
             'content': CKEditorWidget(),
             'category': forms.Select(attrs={
@@ -30,6 +36,7 @@ class PostForm(forms.ModelForm):
         }
         labels = {
             'title': 'Post Title',
+            'description': 'Short Description',
             'content': 'Content',
             'category': 'Category',
             'tags': 'Tags',
@@ -38,6 +45,7 @@ class PostForm(forms.ModelForm):
         }
         help_texts = {
             'title': 'Enter a descriptive title for your post',
+            'description': 'Brief summary of your post (optional, max 300 characters)',
             'content': 'Write your post content (supports rich text)',
             'category': 'Select a category for your post',
             'tags': 'Select relevant tags for your post',

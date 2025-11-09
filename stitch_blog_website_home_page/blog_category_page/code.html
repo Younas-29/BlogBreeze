@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ModernBlog - Productivity</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#137fec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+              "neutral-text-light": "#212121",
+              "neutral-text-dark": "#f9f9f9",
+              "accent-text-light": "#4A90E2",
+              "accent-text-dark": "#6aa7e9",
+              "subtle-text-light": "#616161",
+              "subtle-text-dark": "#a1a1a1"
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col">
+<div class="layout-container flex h-full grow flex-col">
+<!-- TopNavBar Component -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-gray-800 px-4 sm:px-10 py-4 w-full max-w-6xl mx-auto">
+<div class="flex items-center gap-4 text-neutral-text-light dark:text-neutral-text-dark">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M6 6H42L36 24L42 42H6L12 24L6 6Z" fill="currentColor"></path></svg>
+</div>
+<h2 class="text-xl font-bold">ModernBlog</h2>
+</div>
+<div class="hidden md:flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-sm font-medium text-neutral-text-light dark:text-neutral-text-dark hover:text-accent-text-light dark:hover:text-accent-text-dark" href="#">Home</a>
+<a class="text-sm font-bold text-accent-text-light dark:text-accent-text-dark" href="#">Productivity</a>
+<a class="text-sm font-medium text-neutral-text-light dark:text-neutral-text-dark hover:text-accent-text-light dark:hover:text-accent-text-dark" href="#">Design</a>
+<a class="text-sm font-medium text-neutral-text-light dark:text-neutral-text-dark hover:text-accent-text-light dark:hover:text-accent-text-dark" href="#">Technology</a>
+<a class="text-sm font-medium text-neutral-text-light dark:text-neutral-text-dark hover:text-accent-text-light dark:hover:text-accent-text-dark" href="#">About</a>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">Subscribe</span>
+</button>
+</div>
+</header>
+<main class="w-full max-w-4xl mx-auto flex-1 px-4 py-8 sm:py-12">
+<div class="flex flex-col gap-8">
+<!-- Breadcrumbs Component -->
+<div class="flex flex-wrap gap-2">
+<a class="text-sm font-medium text-accent-text-light dark:text-accent-text-dark hover:underline" href="#">Home</a>
+<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">/</span>
+<a class="text-sm font-medium text-accent-text-light dark:text-accent-text-dark hover:underline" href="#">Blog</a>
+<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">/</span>
+<span class="text-sm font-medium text-neutral-text-light dark:text-neutral-text-dark">Productivity</span>
+</div>
+<!-- PageHeading Component -->
+<div class="flex flex-wrap justify-between gap-3">
+<div class="flex min-w-72 flex-col gap-2">
+<p class="text-neutral-text-light dark:text-neutral-text-dark text-4xl sm:text-5xl font-black tracking-tighter">Productivity</p>
+<p class="text-subtle-text-light dark:text-subtle-text-dark text-base font-normal leading-normal max-w-2xl">Explore tips, tools, and strategies to enhance your focus, manage your time effectively, and achieve your goals in a world full of distractions.</p>
+</div>
+</div>
+<!-- ImageGrid (Blog Post Cards) Component -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="flex flex-col gap-3">
+<a class="block" href="#">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg mb-2" data-alt="Abstract colorful lines on a dark background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAKRbMa95vTfgd_-aQkzigDmi1gZiOkFQv5MUIdNS1M8NRzouCmJWY70QpSGc7S3RGeJw_aAeHXhVSwAFYYp3PyCx05H7pcTnAK9ica96JmuOWYUriCtQpw7gIrFGOBNPi1q-_Szgqoye3P_GhK5kVfNzqnVYRjBDEvgXpXM7DMqPmF135rn-WccIscgTiR3OB4VlGvGrDTPuNghzhxw3-7XjnHCR77jY3_Mqbgv-_b0m6pBWpYJ7ZQob78Yv8Cgc0ms0vMfW6hgyrw");'></div>
+</a>
+<div>
+<h3 class="text-neutral-text-light dark:text-neutral-text-dark text-lg font-bold leading-tight">The Art of Deep Work in a Distracted World</h3>
+<p class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal leading-normal mt-1">By Jane Doe • Oct 26, 2023</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<a class="block" href="#">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg mb-2" data-alt="A classic tomato-shaped kitchen timer" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBpthnpSSZIUVmoOvRBdUjxDscnVGYuh_X9ogU0tJGGGbCSNMU1B-LEYWmuu8TG-HrxiOr304eqE8hXCRhPhasDJqVlwiWOvdpNwm2VnHE5KKhnwbf0ENQiE3MCBX5bTJta-rkwQ5dpfFBgdc8Tk-cK6TV9ArILGLsfsoBgsldwSHY0wSDZr6nau1a5aLD9-C2ygOwqishPvU014_7jQi8KXMiG7QbSbbBVCj-B40VAb923kNYDTj3Vs63-dqZDR7DkDFmNFBq_4T3n");'></div>
+</a>
+<div>
+<h3 class="text-neutral-text-light dark:text-neutral-text-dark text-lg font-bold leading-tight">Mastering the Pomodoro Technique for Better Focus</h3>
+<p class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal leading-normal mt-1">By John Smith • Oct 22, 2023</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<a class="block" href="#">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg mb-2" data-alt="A smartphone displaying various app icons on its screen" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBntYo92ThX_0aMA8UY8ZQXguWT67OfJmVn0mtCPUKq1TuChPD5zmtfR2U-M5PI8knjtjAOZrmGR8d576FITmxkY08rvWJsrc5HAwe9w_We91Jl0rOJrcpk6gbHxu7UHARV6eFXPA30abhvOqTxXBchsDEPwip0MOe5BUwJ8lJQRhJuFiSJ7xL0dvUPI8om3Ef1NnentYXr4cR_eG2dzzh9lHa4DDLSbUw9KvYCFvqk3HPnyshcanNXAoYdXVbUCbPn_8p9X7H0U0Ey");'></div>
+</a>
+<div>
+<h3 class="text-neutral-text-light dark:text-neutral-text-dark text-lg font-bold leading-tight">10 Apps That Will Revolutionize Your Workflow</h3>
+<p class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal leading-normal mt-1">By Emily White • Oct 19, 2023</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<a class="block" href="#">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg mb-2" data-alt="An open notebook with intricate diagrams and notes, suggesting a complex system" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCMXZP6xDhUhhGrmZ9Kr8uWAhAhUPnNa9ZjRGXAh7PvPMYjee9Ny5aVvo5jA-9ugHFTSPFK5Vz2bC5iPzQeGy78bW9ieQCZQZfwL7gF4iA0lJ9zC7E1-adZnwhMQ220w0ntrgvMnhbukgI98HNn2U2_uuABTG1eG9BDXhjmP5bgqUohl4RzAaPwQm001o4G9Mt8mc4LEfhxAhtoSCQFbGhJLqoyNJRhp_aCCSmKzpyuEz8zWgZeQtPWlnPi6m7-9JZJn0Km16FxmTd_");'></div>
+</a>
+<div>
+<h3 class="text-neutral-text-light dark:text-neutral-text-dark text-lg font-bold leading-tight">How to Build a Second Brain with Notion</h3>
+<p class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal leading-normal mt-1">By Jane Doe • Oct 15, 2023</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<a class="block" href="#">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg mb-2" data-alt="A silhouette of a person running at sunrise, symbolizing habit formation" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD0yOzpGdgZNHKbuVy7_RS3Xp3rlL147QQFMExTNx9n77qu-Ou7yQj_vEQ8w7aSYR6iGeX8RV5GzD4od2m6ddImiNCwmOcZhTo2A341QXlMmTso40bbmkg0vBQkADOZFhenL1SSY7Xdx4YsLZ6okLuhyMrJj6sBPahSnCyckYGR78sPwj7aynYg96V633nTgrSn2EbiddlAbyacwNMxpvUpA-e5QcsKi21uQR3OlBQwiBbx7DUdaiFrEEgHrrNAd8ZWW0eQlNJNvraI");'></div>
+</a>
+<div>
+<h3 class="text-neutral-text-light dark:text-neutral-text-dark text-lg font-bold leading-tight">The Science of Habit Formation and How to Use It</h3>
+<p class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal leading-normal mt-1">By Michael Brown • Oct 11, 2023</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<a class="block" href="#">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg mb-2" data-alt="A clean, minimalist desk setup with only a laptop and a plant" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCjreWb0sgIZDxSaSyeCX6yIzDIQnJrTyULK2oW5JSwALj8tfI3bxNIsLqURe7MONWQitefgvwZ-yOVzPxjRIJmWWfu0HGZofSZCJz_k_IpvQdZujPspjCkl6bR7IJXztdjnekcV9k5lGRE6CF6MvIpe3LX4DcgK0sOanze5aCZ228dzsmK5Ycs61Hqufwy-4EhZCqOsXPvGdljV9O6niOOkFJRNTe0kaDEelxDM6C6ZJWJ89qwqJ1Cj7ddWoIwYuZIjZv2Jgrsx6vJ");'></div>
+</a>
+<div>
+<h3 class="text-neutral-text-light dark:text-neutral-text-dark text-lg font-bold leading-tight">Declutter Your Digital Life: A Step-by-Step Guide</h3>
+<p class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal leading-normal mt-1">By John Smith • Oct 08, 2023</p>
+</div>
+</div>
+</div>
+<!-- Pagination Component -->
+<div class="flex items-center justify-center pt-8 gap-2">
+<a class="flex size-9 items-center justify-center text-neutral-text-light dark:text-neutral-text-dark hover:bg-black/5 dark:hover:bg-white/10 rounded-lg" href="#">
+<span class="material-symbols-outlined text-xl">chevron_left</span>
+</a>
+<a class="flex size-9 items-center justify-center text-sm font-bold bg-primary/20 dark:bg-primary/30 text-accent-text-light dark:text-accent-text-dark rounded-full" href="#">1</a>
+<a class="flex size-9 items-center justify-center text-sm font-medium text-neutral-text-light dark:text-neutral-text-dark hover:bg-black/5 dark:hover:bg-white/10 rounded-full" href="#">2</a>
+<a class="flex size-9 items-center justify-center text-sm font-medium text-neutral-text-light dark:text-neutral-text-dark hover:bg-black/5 dark:hover:bg-white/10 rounded-full" href="#">3</a>
+<a class="flex size-9 items-center justify-center text-neutral-text-light dark:text-neutral-text-dark hover:bg-black/5 dark:hover:bg-white/10 rounded-lg" href="#">
+<span class="material-symbols-outlined text-xl">chevron_right</span>
+</a>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

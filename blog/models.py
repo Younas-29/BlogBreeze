@@ -53,6 +53,11 @@ class Post(models.Model):
     
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
+    description = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="Short description of the post (max 300 characters)"
+    )
     content = RichTextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='posts')

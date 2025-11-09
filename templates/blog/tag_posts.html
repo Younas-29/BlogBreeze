@@ -1,105 +1,86 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ tag.name }} - Django Blog{% endblock %}
+{% block title %}{{ tag.name }} - Modern Blog{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-8 mx-auto">
-        <h1 class="mb-2">Posts tagged with "{{ tag.name }}"</h1>
+<main class="w-full max-w-4xl mx-auto flex-1 px-4 py-8 sm:py-12">
+    <div class="flex flex-col gap-8">
+        <!-- Back Button -->
+        <div class="mb-4">
+            <a href="{% url 'blog:post_list' %}" class="inline-flex items-center gap-2 text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-lg">arrow_back</span>
+                <span>Back to Home</span>
+            </a>
+        </div>
         
-        <p class="text-muted mb-4">
-            <small>Showing {{ page_obj.paginator.count }} post{{ page_obj.paginator.count|pluralize }} with this tag</small>
-        </p>
+        <!-- Page Heading -->
+        <div class="flex flex-wrap justify-between gap-3">
+            <div class="flex min-w-72 flex-col gap-2">
+                <p class="text-text-light dark:text-text-dark text-4xl sm:text-5xl font-black tracking-tighter">Posts tagged "{{ tag.name }}"</p>
+                <p class="text-text-secondary-light dark:text-text-secondary-dark text-base font-normal leading-normal">
+                    Showing {{ page_obj.paginator.count }} post{{ page_obj.paginator.count|pluralize }} with this tag
+                </p>
+            </div>
+        </div>
         
         {% if posts %}
-            {% for post in posts %}
-                <div class="card mb-4 shadow-sm">
-                    {% if post.featured_image %}
-                        <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}" style="max-height: 300px; object-fit: cover;">
-                    {% endif %}
-                    <div class="card-body">
-                        <h2 class="card-title">
-                            <a href="{% url 'blog:post_detail' post.slug %}" class="text-decoration-none text-dark">
-                                {{ post.title }}
-                            </a>
-                        </h2>
-                        
-                        <div class="text-muted mb-3">
-                            <small>
-                                By <strong>{{ post.author.username }}</strong> 
-                                in <a href="{% url 'blog:category_posts' post.category.slug %}" class="badge bg-primary text-decoration-none">{{ post.category.name }}</a>
-                                | {{ post.created_at|date:"F d, Y" }}
-                                {% if post.status == 'draft' %}
-                                    <span class="badge bg-warning text-dark">Draft</span>
-                                {% endif %}
-                            </small>
+            <!-- Post Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for post in posts %}
+                    <div class="flex flex-col gap-3">
+                        <a class="block" href="{% url 'blog:post_detail' post.slug %}">
+                            <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg mb-2" 
+                                 style="background-image: url('{% if post.featured_image %}{{ post.featured_image.url }}{% else %}https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800{% endif %}');"></div>
+                        </a>
+                        <div>
+                            <h3 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight">
+                                <a href="{% url 'blog:post_detail' post.slug %}" class="hover:text-primary transition-colors">
+                                    {{ post.title }}
+                                </a>
+                            </h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal leading-normal mt-1">
+                                {{ post.author.username }} • {{ post.created_at|date:"d M Y" }}
+                            </p>
                         </div>
-                        
-                        <p class="card-text">
-                            {{ post.content|truncatewords:50|safe }}
-                        </p>
-                        
-                        {% if post.tags.all %}
-                            <div class="mb-3">
-                                {% for post_tag in post.tags.all %}
-                                    <a href="{% url 'blog:tag_posts' post_tag.slug %}" class="badge bg-secondary text-decoration-none {% if post_tag.slug == tag.slug %}active{% endif %}">{{ post_tag.name }}</a>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                        
-                        <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-primary">Read More</a>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
             
             <!-- Pagination -->
             {% if is_paginated %}
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        {% if page_obj.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page=1" aria-label="First">
-                                    <span aria-hidden="true">&laquo;&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                        
-                        <li class="page-item active">
-                            <span class="page-link">
-                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                <div class="flex items-center justify-center pt-8 gap-2">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="flex size-9 items-center justify-center text-text-light dark:text-text-dark hover:bg-black/5 dark:hover:bg-white/10 rounded-lg">
+                            <span class="material-symbols-outlined text-xl">chevron_left</span>
+                        </a>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <span class="flex size-9 items-center justify-center text-sm font-bold bg-primary/20 dark:bg-primary/30 text-primary rounded-full">
+                                {{ num }}
                             </span>
-                        </li>
-                        
-                        {% if page_obj.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
-                                    <span aria-hidden="true">&raquo;&raquo;</span>
-                                </a>
-                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a href="?page={{ num }}" class="flex size-9 items-center justify-center text-sm font-medium text-text-light dark:text-text-dark hover:bg-black/5 dark:hover:bg-white/10 rounded-full">
+                                {{ num }}
+                            </a>
                         {% endif %}
-                    </ul>
-                </nav>
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="flex size-9 items-center justify-center text-text-light dark:text-text-dark hover:bg-black/5 dark:hover:bg-white/10 rounded-lg">
+                            <span class="material-symbols-outlined text-xl">chevron_right</span>
+                        </a>
+                    {% endif %}
+                </div>
             {% endif %}
         {% else %}
-            <div class="alert alert-info">
-                <h4>No posts with this tag</h4>
-                <p>There are currently no published posts tagged with "{{ tag.name }}". Check back later!</p>
+            <!-- Empty State -->
+            <div class="flex flex-col items-center justify-center py-20">
+                <p class="text-2xl font-bold mb-2 text-text-light dark:text-text-dark">No posts with this tag</p>
+                <p class="text-text-secondary-light dark:text-text-secondary-dark">Check back later for new content!</p>
             </div>
         {% endif %}
-        
-        <div class="mt-4">
-            <a href="{% url 'blog:post_list' %}" class="btn btn-secondary">← Back to All Posts</a>
-        </div>
     </div>
-</div>
+</main>
 {% endblock %}
