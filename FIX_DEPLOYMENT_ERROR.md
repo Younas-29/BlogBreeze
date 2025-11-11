@@ -1,233 +1,62 @@
-# 🔧 Fix Deployment Error - "No module named 'app'"
+# Fix Deployment Error - Missing GitHub Secrets
 
-## The Problem
-
-Your deployment failed with this error:
+## ❌ Error
 ```
-ModuleNotFoundError: No module named 'app'
+Error: Deployment failed, Error: No credentials found
 ```
 
-This means Render is using the **wrong Start Command**.
+## 🔧 Solution
 
----
+You need to add the Azure publish profile as a GitHub secret.
 
-## The Solution
+### Step 1: Get the Publish Profile
 
-You need to update the **Start Command** in your Render web service settings.
+The publish profile is already saved in your local file: `azure-publish-profile.xml`
 
-### Current (Wrong) Command:
-```
-gunicorn app:app
-```
+### Step 2: Add GitHub Secret
 
-### Correct Command:
-```
-gunicorn BlogBreeze.wsgi:application
-```
+1. Go to your GitHub repository: **https://github.com/Younas-29/BlogBreeze**
 
----
+2. Click **Settings** (top menu)
 
-## How to Fix It
+3. In the left sidebar, click **Secrets and variables** → **Actions**
 
-### Step 1: Go to Your Web Service Settings
+4. Click the green **New repository secret** button
 
-1. Log in to Render.com
-2. Click on your web service (blogbreeze)
-3. Click **"Settings"** in the left sidebar
+5. Add the first secret:
+   - **Name**: `AZURE_WEBAPP_PUBLISH_PROFILE`
+   - **Value**: Open the file `azure-publish-profile.xml` and copy **ALL** its content (the entire XML)
+   - Click **Add secret**
 
-### Step 2: Find Start Command
+6. Add the second secret:
+   - Click **New repository secret** again
+   - **Name**: `SECRET_KEY`
+   - **Value**: `W3nvXMUCzLLQoyMH8S4W-_ZM7JA6A5f0ffdl7mZ9VhcqHDiC7gJtJqd9hyRlxjqjR54`
+   - Click **Add secret**
 
-1. Scroll down to **"Build & Deploy"** section
-2. Find **"Start Command"** field
+### Step 3: Re-run the Deployment
 
-### Step 3: Update the Command
+After adding the secrets:
 
-1. **Delete** the current command: `gunicorn app:app`
-2. **Enter** the correct command:
-   ```
-   gunicorn BlogBreeze.wsgi:application
-   ```
-3. Click **"Save Changes"**
-
-### Step 4: Redeploy
-
-1. Scroll to the top
-2. Click **"Manual Deploy"** button
-3. Select **"Deploy latest commit"**
-4. Click **"Deploy"**
-
----
-
-## Visual Guide
-
-```
-Render Dashboard
-    ↓
-Your Web Service (blogbreeze)
-    ↓
-Settings (left sidebar)
-    ↓
-Scroll to "Build & Deploy"
-    ↓
-Find "Start Command"
-    ↓
-Change to: gunicorn BlogBreeze.wsgi:application
-    ↓
-Save Changes
-    ↓
-Manual Deploy → Deploy latest commit
-```
-
----
-
-## Alternative: Update Build Command Too
-
-While you're in settings, also verify the **Build Command**:
-
-### Correct Build Command:
-```
-./build.sh
-```
-
-If it's different, update it to `./build.sh`
-
----
-
-## After Fixing
-
-Once you save and redeploy:
-
-1. **Wait 3-5 minutes** for deployment
-2. **Check the logs** - you should see:
-   ```
-   [INFO] Listening at: http://0.0.0.0:10000
-   [INFO] Using worker: sync
-   ```
-3. **Visit your app URL** - it should work!
-
----
-
-## Why This Happened
-
-When you created the web service, you might have:
-- Left the Start Command field empty (Render guessed wrong)
-- Typed the wrong command manually
-- Used a template for a different framework
-
-The correct command for Django is always:
-```
-gunicorn YourProjectName.wsgi:application
-```
-
-In your case: `BlogBreeze.wsgi:application`
-
----
-
-## Verification Checklist
-
-After fixing, verify these settings:
-
-### Build & Deploy Section:
-- [ ] **Build Command**: `./build.sh`
-- [ ] **Start Command**: `gunicorn BlogBreeze.wsgi:application`
-
-### Environment Variables:
-- [ ] `PYTHON_VERSION` = `3.11.0`
-- [ ] `SECRET_KEY` = (generated)
-- [ ] `DEBUG` = `False`
-- [ ] `DATABASE_URL` = `postgresql://...`
-
----
-
-## If It Still Fails
-
-### Check the Logs
-
-Look for these specific errors:
-
-**Error 1: "build.sh: Permission denied"**
-- The build.sh file needs to be executable
-- We'll fix this below
-
-**Error 2: "No such file or directory: build.sh"**
-- The build.sh file is missing
-- Make sure it's in your GitHub repo
-
-**Error 3: Database connection error**
-- Check DATABASE_URL is set correctly
-- Use Internal Database URL (not External)
-
----
-
-## Fix build.sh Permission (If Needed)
-
-If you get "Permission denied" for build.sh:
-
-### Option 1: Make it executable locally
+**Option A: Push a new commit**
 ```bash
-# On your local machine
-git update-index --chmod=+x build.sh
-git commit -m "Make build.sh executable"
-git push origin main
+git commit --allow-empty -m "Trigger deployment after adding secrets"
+git push origin azd-enable-copilot-coding-agent-with-azure
 ```
 
-### Option 2: Update Build Command
-Change Build Command to:
-```
-chmod +x build.sh && ./build.sh
-```
+**Option B: Re-run from GitHub**
+1. Go to: https://github.com/Younas-29/BlogBreeze/actions
+2. Click on the failed workflow run
+3. Click **Re-run all jobs**
+
+### ✅ Verify Secrets Are Added
+
+Go to: https://github.com/Younas-29/BlogBreeze/settings/secrets/actions
+
+You should see:
+- ✅ `AZURE_WEBAPP_PUBLISH_PROFILE`
+- ✅ `SECRET_KEY`
 
 ---
 
-## Complete Settings Reference
-
-Here's what your Render settings should look like:
-
-### General
-- **Name**: blogbreeze (or your choice)
-- **Region**: (your choice)
-- **Branch**: main
-- **Root Directory**: (leave blank)
-
-### Build & Deploy
-- **Runtime**: Python 3
-- **Build Command**: `./build.sh`
-- **Start Command**: `gunicorn BlogBreeze.wsgi:application`
-
-### Environment Variables
-```
-PYTHON_VERSION = 3.11.0
-SECRET_KEY = (generated by Render)
-DEBUG = False
-DATABASE_URL = postgresql://... (from your database)
-```
-
----
-
-## Quick Fix Summary
-
-1. Go to Settings
-2. Change Start Command to: `gunicorn BlogBreeze.wsgi:application`
-3. Save Changes
-4. Manual Deploy
-5. Wait 3-5 minutes
-6. Your app should be live! 🎉
-
----
-
-## Need More Help?
-
-### Check These:
-1. Start Command is exactly: `gunicorn BlogBreeze.wsgi:application`
-2. Build Command is: `./build.sh`
-3. All 4 environment variables are set
-4. DATABASE_URL is the Internal URL (not External)
-
-### Still Stuck?
-- Check the deployment logs in Render
-- Look for the specific error message
-- Verify your GitHub repo has all files
-
----
-
-**Fix the Start Command and redeploy - you'll be live in minutes! 🚀**
+**Important**: The `azure-publish-profile.xml` file contains sensitive credentials. Make sure it's in `.gitignore` and never commit it to Git!
