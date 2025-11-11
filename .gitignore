@@ -33,3 +33,7 @@ Thumbs.db
 # Environment variables
 .env
 .env.local
+
+# Azure credentials
+azure-publish-profile.xml
+*.publishsettings
