@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
+from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Category(models.Model):
@@ -76,7 +80,39 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
+        
+        # Debug logging for image upload
+        if self.featured_image:
+            logger.info(f"=" * 80)
+            logger.info(f"POST SAVE - Image Upload Debug Info")
+            logger.info(f"=" * 80)
+            logger.info(f"Post Title: {self.title}")
+            logger.info(f"Image Field: {self.featured_image}")
+            logger.info(f"Image Name: {self.featured_image.name}")
+            logger.info(f"DEFAULT_FILE_STORAGE: {settings.DEFAULT_FILE_STORAGE}")
+            logger.info(f"MEDIA_URL: {settings.MEDIA_URL}")
+            
+            # Check if using Azure storage
+            if hasattr(settings, 'AZURE_ACCOUNT_NAME'):
+                logger.info(f"Azure Storage Account: {settings.AZURE_ACCOUNT_NAME}")
+                logger.info(f"Azure Container: {getattr(settings, 'AZURE_CONTAINER', 'NOT SET')}")
+                logger.info(f"Expected Azure URL: https://{settings.AZURE_ACCOUNT_NAME}.blob.core.windows.net/{getattr(settings, 'AZURE_CONTAINER', 'media')}/{self.featured_image.name}")
+            else:
+                logger.info(f"Using Local Storage: {settings.MEDIA_ROOT}")
+            
+            # Log the storage backend being used
+            if hasattr(self.featured_image, 'storage'):
+                logger.info(f"Storage Backend: {type(self.featured_image.storage).__name__}")
+                logger.info(f"Storage Backend Module: {type(self.featured_image.storage).__module__}")
+            
+            logger.info(f"=" * 80)
+        
         super().save(*args, **kwargs)
+        
+        # Log after save to confirm URL
+        if self.featured_image:
+            logger.info(f"POST SAVE COMPLETE - Image URL: {self.featured_image.url}")
+            logger.info(f"=" * 80)
 
 
 class Comment(models.Model):
